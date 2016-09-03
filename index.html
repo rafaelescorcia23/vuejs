@@ -14,33 +14,43 @@
 
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-<form>
-    <div v-show="usuario">
-        <h1>{{ sexo == 'M' ? 'Bienvenido' : 'Bienvenida'}}, {{usuario}}</h1>
-        <p>Texto de prueba</p>
-    </div>
-        <p v-else>Texto de Prueba 2</p>
 
-    <input type="text" v-model="usuario" class="form-control">
+        <form @submit="signUp(false,$event)">
+            <div v-show="usuario">
+                <h1>{{ sexo == 'M' ? 'Bienvenido' : 'Bienvenida'}}, {{usuario}}</h1>
+                <p>Texto de prueba</p>
+            </div>
+                <p v-else>Texto de Prueba 2</p>
 
-    <select v-model="sexo" class="form-control">
-      <option value="M">Masculino</option>
-      <option value="F">Femenino</option>
-    </select>
+            <input type="text" v-model="usuario" class="form-control">
 
-    <p v-show="usuario">
-      <button type="submit" class="btn btn-primary" v-on:click.prevent="signUp">Registrar</button>
-    </p>
+            <select v-model="sexo" class="form-control">
+              <option value="M">Masculino</option>
+              <option value="F">Femenino</option>
+            </select>
+
+            <p v-show="usuario">
+              <button type="submit" class="btn btn-primary">Registrar</button>
+            </p>
+            <p v-show="usuario">
+              <button type="submit" class="btn btn-primary" v-on:click="signUp(true, $event)">Registrar y salir del sistema</button>
+            </p>
+
+            <p>Cuantos años de experiencia tienes con PHP?</p>
+            <p>Respuesta: {{years_php}}
+                <button  type="button" class="btn" v-on:click="addYear">+</button>
+                <button type="button" class="btn" v-on:click="subYear">-</button>
+            </p>
 
 
-<hr>
-    <p v-if="usuario == ''" class="alert alert-danger">
-        Campo obligatorio
-    </p>
+        <hr>
+            <p v-if="usuario == ''" class="alert alert-danger">
+                Campo obligatorio
+            </p>
 
-    <p v-if="usuario.length < 2" class="alert alert-danger">nombre no valido</p>
+            <p v-if="usuario.length < 2" class="alert alert-danger">nombre no valido</p>
 
-  </form>
+          </form>
         <div class="well">
 
 
@@ -56,14 +66,33 @@
         el:'#app',
         data:{
           usuario: "",
-          sexo: ''
+          sexo: '',
+          years_php: 0
         },
         methods:{
-            signUp: function(event){
+            signUp: function (logout, event){
+                event.preventDefault();
+                alert(this.usuario+ ',Gracias por registrarte');
 
-              alert('Hola, publicamos el commit en github');
+                if(logout){
+                    alert("saliendo del sistema");
+                }
+            },
+
+            addYear : function(){
+                this.years_php ++;
+            },
+
+            subYear : function(){
+                if(this.years_php > 0){
+                  this.years_php --;
+                }
             }
+
         }
+
+
+
     });
 
 
